@@ -394,9 +394,12 @@ jobs:
     strategy:
       matrix:
         version:
-          - { mc: 1.21.5, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
-          - { mc: 1.21.5, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
-          - { mc: 1.21.5, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
+          - { mc: 26.1.1, type: lexforge, modloader: forge, regex: .*forge.*, java: 25 }
+          - { mc: 26.1.1, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 25 }
+          - { mc: 26.1.1, type: fabric, modloader: fabric, regex: .*fabric.*, java: 25 }
+          - { mc: 1.21.11, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
+          - { mc: 1.21.11, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
+          - { mc: 1.21.11, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
           #- { mc: 1.21.4, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
           #- { mc: 1.21.4, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
           #- { mc: 1.21.4, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
@@ -480,10 +483,8 @@ jobs:
           # the following line should always be here,
           # regardless if mc-runtime-test already supports this version or not
           # to test if this step works
-          - { branch: 1.21.11-support, dir: 1_21_11,  mc: 1.21.11, lex: 61.0.6, neo: 35-beta, java: 21 }
-          - { branch: 26.1.1-support, dir: 26_1,  mc: 26.1.1, lex: 63.0.1, neo: 3-beta, java: 25 }
-          - { branch: 26.1.1-support, dir: 26_1,  mc: 26.1, lex: 62.0.9, neo: 19-beta, java: 25 }
-          #- { branch: main, dir: 1_21_10,  mc: 1.21.10, lex: 60.0.0, neo: 50-beta, java: 21 }
+          #- { branch: main, dir: 26_1,  mc: 26.1.1, lex: 63.0.1, neo: 3-beta, java: 25 }
+          - { branch: main, dir: 1_21_10,  mc: 1.21.10, lex: 60.0.0, neo: 50-beta, java: 21 }
     uses: ./.github/workflows/build-runtime-test.yml
     if: '!cancelled()' # run always cause we want to see how each version is doing
     #if: false for when mc-runtime-test is up to date and HeadlessMc can launch any version
@@ -502,16 +503,7 @@ jobs:
           # the following line should always be here,
           # regardless if mc-runtime-test already supports this version or not
           # to test if this step works
-          - { mc: 26.1.1, type: lexforge, modloader: forge, regex: .*forge.*, java: 25 }
-          - { mc: 26.1.1, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 25 }
-          - { mc: 26.1.1, type: fabric, modloader: fabric, regex: .*fabric.*, java: 25 }
-          - { mc: 26.1, type: lexforge, modloader: forge, regex: .*forge.*, java: 25 }
-          - { mc: 26.1, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 25 }
-          - { mc: 26.1, type: fabric, modloader: fabric, regex: .*fabric.*, java: 25 }
-          - { mc: 1.21.11, type: lexforge, modloader: forge, regex: .*forge.*, java: 21 }
-          - { mc: 1.21.11, type: neoforge, modloader: neoforge, regex: .*neoforge.*, java: 21 }
-          - { mc: 1.21.11, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
-          #- { mc: 1.21.10, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
+          - { mc: 1.21.10, type: fabric, modloader: fabric, regex: .*fabric.*, java: 21 }
     runs-on: ubuntu-latest
     if: '!cancelled()' # run always cause we want to see how each version is doing
     #if: false for when mc-runtime-test is up to date and HeadlessMc can launch any version
@@ -811,6 +803,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          #draft: true
           generate_release_notes: true
           files: |
             ./headlessmc-launcher-wrapper/build/libs/headlessmc-launcher-*.jar
