@@ -29,6 +29,15 @@ import static org.objectweb.asm.Opcodes.*;
 public class LwjglTransformer implements Transformer {
     @Override
     public void transform(ClassNode cn) {
+        // MC 26.2 introduced com.mojang.blaze3d.platform.NativeLibrariesBootstrap which
+        // accesses LWJGL's low-level system utilities (Configuration.SHARED_LIBRARY_EXTRACT_PATH,
+        // Platform.getArchitecture(), etc.) before any mod can intervene. These classes are NOT
+        // rendering code — they're host/OS detection. If we strip their <clinit>, MC NPEs in
+        // Main.main before Fabric loads. Skip the whole org/lwjgl/system/ package.
+        if (cn.name != null && cn.name.startsWith("org/lwjgl/system/")) {
+            return;
+        }
+
         try {
             transformModule(cn);
         } catch (NoSuchFieldError ignored) {
